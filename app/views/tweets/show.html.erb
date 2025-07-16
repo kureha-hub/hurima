@@ -1,29 +1,238 @@
-<h1>GeekTwitter</h1>
-<h3>Tweet詳細</h3>
-<div class="tweet">
-    <p><%= @tweet.body %></p>
-    <p><%= @tweet.created_at %></p>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HurimaApp</title>
+<%= stylesheet_link_tag 'show', media: 'all' %>
+<%= stylesheet_link_tag 'reset', media: 'all' %>
+<meta name="csrf-token" content="<%= form_authenticity_token %>">
+</head>
+<body>
+    <!--ヘッダー-->
+    <header class="header_tweet">
+    <div class="container inner">
+        <!-- ロゴ + 検索バー -->
+        <div class="area_logo_header">
+        <a class="logo" href="#">
+            <img src="/assets/hurima_logo.png" alt="ロゴ" class="header-logo" />
+        </a>
 
+        <!-- 検索バー -->
+        <div class="search-bar">
+            <%= form_tag({controller: "tweets", action: "index"}, method: :get) do %>
+            <%= label_tag :search, "検索" %>
+            <%= text_field_tag :search, nil, placeholder: "検索", class: "search-input" %>
+            <%= submit_tag '検索', class: "search-submit" %>
+            <% end %>
+        </div>
+        </div>
+        
+
+        <!-- ナビゲーション -->
+        <nav class="area_nav_header">
+        <ul class="list_nav_header">
+            <!-- ホーム -->
+            <li class="home">
+            <%= link_to tweets_path do %>
+                <svg class="icon home-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                <path d="M12 6.453l9 8.375v9.172h-6v-6h-6v6h-6v-9.172l9-8.375zm12 5.695l-12-11.148-12 11.133 1.361 1.465 10.639-9.868 10.639 9.883 1.361-1.465z"/>
+                </svg>
+            <% end %>
+            </li>
+
+            <!-- いいね -->
+            <li class="favorite">
+            <%= link_to user_path(current_user, anchor: "likes") do %>
+                <svg class="icon nav-heart-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                <path d="m12 5.72c-2.624-4.517-10-3.198-10 2.461 0 3.725 4.345 7.727 9.303 12.54.194.189.446.283.697.283s.503-.094.697-.283c4.977-4.831 9.303-8.814 9.303-12.54 0-5.678-7.396-6.944-10-2.461z" />
+                </svg>
+            <% end %>
+            </li>
+
+            <!-- ユーザー -->
+            <li class="user-dropdown">
+            <input type="checkbox" id="toggle-user-menu" hidden>
+            <label for="toggle-user-menu" class="user-icon-wrapper">
+                <svg class="icon user-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                <path d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z"/>
+                </svg>
+            </label>
+            <ul class="dropdown-menu">
+                <li><%= link_to 'マイページ', user_path(current_user.id) %></li>
+                <li><%= link_to 'いいね一覧', likes_path %></li>
+                <li><%= link_to '投稿一覧', tweets_path %></li>
+                <li><%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "logout-link" %></li>
+            </ul>
+            </li>
+
+            <!-- 出品 -->
+            <li class="btn_tweet">
+            <%= link_to "出品", new_tweet_path, class: "btn_tweet" %>
+            </li>
+        </ul>
+        </nav>
+    </div>
+    </header>
+
+        <!-- ▼タグ検索トグル＋フォーム -->
+        <button id="toggle-tag-search" class="tag-search-toggle">タグ検索 ▼</button>
+
+        <div id="tag-search-box" style="display: none;" class="tag-search-box">
+        <%= form_tag({controller: "tweets", action: "index"}, method: :get) do %>
+            <% Tag.all.each do |tag| %>
+            <label class="tag-label">
+                <%= check_box_tag "tag_ids[]", tag.id %>
+                <%= tag.name %>
+            </label>
+            <% end %>
+            <%= submit_tag '検索', class: "tag-submit-button" %>
+        <% end %>
+        </div>
+
+<!-- 商品詳細全体 -->
+<div class="tweet-detail-container">
+<div class="tweet-detail-box">
+
+    <!-- 商品画像 -->
+    <div class="tweet-image">
+    <% if @tweet.image.attached? %>
+        <%= image_tag url_for(@tweet.image), alt: "商品画像", class: "product-image" %>
+    <% else %>
+        <%= image_tag "noimage.png", class: "product-image" %>
+    <% end %>
+    </div>
+
+    <!-- 商品情報 -->
+    <div class="tweet-info">
+    <p><strong>商品名：</strong><%= @tweet.product_name.presence || "（未入力）" %></p>
+    <p><strong>講義名：</strong><%= @tweet.lecture.presence || "（未入力）" %></p>
+    <p><strong>説明：</strong><%= simple_format(@tweet.body.presence || "（未入力）") %></p>
+    <p><strong>出品者：</strong><%= @tweet.user.email %></p>
+
+    <!-- いいね・コメント数 -->
+    <div class="action-row">
+        <button class="like-button <%= 'liked' if current_user.already_liked?(@tweet) %>"
+                data-tweet-id="<%= @tweet.id %>"
+                data-like-id="<%= @tweet.likes.find_by(user_id: current_user.id)&.id %>">
+        <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="m12 5.72c-2.624-4.517-10-3.198-10 2.461
+                    0 3.725 4.345 7.727 9.303 12.54.194.189.446.283.697.283s.503-.094.697-.283
+                    c4.977-4.831 9.303-8.814 9.303-12.54
+                    0-5.678-7.396-6.944-10-2.461z"/>
+        </svg>
+        <span class="like-count"><%= @tweet.likes.count %></span>
+        </button>
+        <span class="comment-icon">💬 <%= @comments.count %></span>
+    </div>
+
+    <!-- 購入/チャット/出品者表示 -->
     <% if user_signed_in? %>
-        <% if current_user.already_liked?(@tweet) %>
-        <%= button_to tweet_like_path(id: @tweet.id, tweet_id: @tweet.id), data: { turbo_method: :delete } do %>
-            <i class="fas fa-heart"></i><%= @tweet.likes.count %>
+        <% if @tweet.order.nil? %>
+        <% if current_user.id != @tweet.user_id %>
+            <%= button_to "購入する", orders_path(tweet_id: @tweet.id), method: :post, class: "btn btn-success" %>
+        <% else %>
+            <p>これはあなたの出品です。</p>
+        <% end %>
+        <% else %>
+        <% if [@tweet.order.buyer_id, @tweet.user_id].include?(current_user.id) %>
+            <%= link_to "チャット画面へ", order_messages_path(@tweet.order), class: "chat-button" %>
+            <% if current_user.id == @tweet.user_id %>
+            <%= button_to "取引を中止する", order_path(@tweet.order), method: :delete, data: { confirm: "本当に取引を中止しますか？" }, class: "btn btn-danger" %>
+            <% end %>
+        <% else %>
+            <p>この商品は取引中です。</p>
+        <% end %>
         <% end %>
     <% else %>
-        <%= button_to tweet_likes_path(id: @tweet.id, tweet_id: @tweet.id), data: { turbo_method: :post }  do %>
-            <i class="far fa-heart"></i><%= @tweet.likes.count %>
-        <% end %>
+        <p>購入・チャット機能を使うにはログインが必要です。</p>
     <% end %>
-    <% else %>
-        <i class="far fa-heart"></i><%= @tweet.likes.count %>
-    <% end %>
-    
-    <%= link_to "編集する", edit_tweet_path(@tweet.id) %>
+    </div>
 </div>
 
-<h2>いいねしたユーザー</h2>
-    <% @tweet.liked_users.each do |user| %>
-        <li><%= user.email %></li>
+<!-- コメントセクション -->
+<div class="comment-wrapper">
+    <h3>コメント一覧</h3>
+    <% @comments.each do |comment| %>
+    <div class="comment">
+        <strong><%= comment.user.email %></strong><br>
+        <%= comment.content %>
+    </div>
     <% end %>
 
-<%= link_to "Tweet一覧に戻る", tweets_path %>
+    <% if user_signed_in? %>
+    <div class="comment-form">
+        <%= form_with(model: [@tweet, Comment.new], local: true) do |form| %>
+        <%= form.text_area :content, placeholder: "コメントを書く…" %>
+        <%= form.submit "送信", class: "comment-submit" %>
+        <% end %>
+    </div>
+    <% end %>
+</div>
+</div>
+
+<!-- フッター -->
+<footer>
+<div class="footer-content">
+    <p>© 2025 HurimaApp</p>
+</div>
+</footer>
+
+<!-- JavaScript：いいね処理 -->
+<script>
+document.addEventListener("turbo:load", function() {
+document.querySelectorAll(".like-button").forEach(button => {
+    button.addEventListener("click", function(e) {
+    e.preventDefault();
+    const tweetId = this.dataset.tweetId;
+    const likeId = this.dataset.likeId;
+    const isLiked = this.classList.contains("liked");
+    const method = isLiked ? "DELETE" : "POST";
+    const url = isLiked ? `/tweets/${tweetId}/likes/${likeId}` : `/tweets/${tweetId}/likes`;
+    const likeCountSpan = this.querySelector(".like-count");
+
+    fetch(url, {
+        method: method,
+        headers: {
+        "X-CSRF-Token": document.querySelector("meta[name=csrf-token]").content,
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+    }).then(res => {
+        if (res.ok) {
+        this.classList.toggle("liked");
+        const count = parseInt(likeCountSpan.textContent);
+        likeCountSpan.textContent = isLiked ? count - 1 : count + 1;
+
+        const heart = this.querySelector(".heart-icon");
+        heart.classList.remove("animate-pop");
+        void heart.offsetWidth;
+        heart.classList.add("animate-pop");
+
+        if (isLiked) {
+            this.dataset.likeId = "";
+        } else {
+            res.json().then(data => {
+            this.dataset.likeId = data.like_id;
+            });
+        }
+        }
+    });
+    });
+});
+});
+
+document.addEventListener("turbo:load", function () {
+    const toggleBtn = document.getElementById("toggle-tag-search");
+    const tagBox = document.getElementById("tag-search-box");
+    if (toggleBtn && tagBox) {
+        toggleBtn.addEventListener("click", () => {
+            tagBox.style.display = (tagBox.style.display === "none" || tagBox.style.display === "") ? "block" : "none";
+        });
+    }
+});
+
+</script>
+
+</body>
+</html>

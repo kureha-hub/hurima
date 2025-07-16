@@ -1,3 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HurimaApp</title>
+    <%= stylesheet_link_tag 'tweet', media: 'all' %> <!-- アプリケーション全体でスタイルを適用 -->
+</head>
+
+<body>
+    <!--ヘッダー-->
+    <header class = header_tweet>
+        <div class = "container">
+        <!--ロゴ-->
+            <div class = "area_logo_header">
+                <a class="logo" href="#">
+                    <img src="/assets/hurima_logo.png" alt="ロゴ" class="header-logo" />
+                </a>
+                <!-- 検索バー -->
+                <div class="search-bar">
+                    <%= form_tag({controller: "tweets", action: "index"}, method: :get) do %>
+                        <%= label_tag :search, "検索" %> <!-- 検索のラベルを追加 -->
+                        <%= text_field_tag :search, nil, placeholder: "検索", class: "search-input" %>
+                        <%= submit_tag '検索', class: "search-submit" %> <!-- 検索ボタンにクラスを追加 -->
+                    <% end %>
+                </div>
+            </div>
+
+        <!-- ナビゲーション -->
+    <nav class="area_nav_header">
+        <ul class="list_nav_header">
+            <!-- ホーム -->
+            <li class="home">
+            <%= link_to tweets_path do %>
+                <svg class="icon home-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                <path d="M12 6.453l9 8.375v9.172h-6v-6h-6v6h-6v-9.172l9-8.375zm12 5.695l-12-11.148-12 11.133 1.361 1.465 10.639-9.868 10.639 9.883 1.361-1.465z"/>
+                </svg>
+            <% end %>
+            </li>
+            <!-- ハート -->
+            <li class="favorite">
+                <%= link_to user_path(current_user, anchor: "likes") do %>
+                    <svg class="icon nav-heart-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                    <path d="m12 5.72c-2.624-4.517-10-3.198-10 2.461 0 3.725 4.345 7.727 9.303 12.54.194.189.446.283.697.283s.503-.094.697-.283c4.977-4.831 9.303-8.814 9.303-12.54 0-5.678-7.396-6.944-10-2.461z" />
+                    </svg>
+                <% end %>
+            </li>
+            <!-- ユーザーアイコン -->
+            <li class="user-dropdown">
+                <!-- 隠しチェックボックス -->
+                <input type="checkbox" id="toggle-user-menu" hidden>
+                
+                <!-- ラベルがクリック対象（ユーザーアイコン） -->
+                <label for="toggle-user-menu" class="user-icon-wrapper">
+                    <svg class="icon user-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                    <path d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z"/>
+                    </svg>
+                </label>
+
+                <!-- メニュー -->
+                <ul class="dropdown-menu">
+                    <li><%= link_to 'マイページ', user_path(current_user.id) %></li>
+                    <li><%= link_to 'いいね一覧', likes_path %></li>
+                    <li><%= link_to '投稿一覧', tweets_path %></li>
+                    <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+                </ul>
+            </li>
+            <!-- 出品 -->
+            <li class ="btn_tweet">
+            <%= link_to "出品", new_tweet_path, class: "btn_tweet" %>
+            </li>
+        </ul>
+        </nav>
+
+    </div>
+</header>
+<!--　ヘッダ終わり--> 
+
 <%= form_for @tweet do |f| %>
     <%= f.label :body %>
     <%= f.text_field :body, :size => 140 %> 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HurimaApp</title>
+<%= stylesheet_link_tag 'tweet', media: 'all' %>
+</head>
+
+<body>
+<div class="tweets-container">
+    <% if @liked_tweets.any? %>
+    <% @liked_tweets.each do |tweet| %>
+        <div class="tweet-list">
+        <div class="card-body">
+            <!-- ユーザー名（左上に配置） -->
+            <div class="user-name">
+            <strong><%= tweet.user.name %></strong>
+            </div>
+
+            <!-- 商品画像 -->
+            <% if tweet.image.attached? %>
+            <%= link_to tweet_path(tweet.id) do %>
+                <%= image_tag tweet.image, size: "250x200", class: "tweet-image" %>
+            <% end %>
+            <% else %>
+            <%= image_tag 'noimage.png', size: "250x200", class: "tweet-image" %>
+            <% end %>
+
+            <div class="tweet-info-wrap">
+            <div class="tweet-info">
+                <div class="tweet-name">
+                <%= tweet.product_name.presence || "（未入力）" %>
+                </div>
+                <div class="tweet-lecture">
+                    <%= tweet.lecture.presence || "（未入力）" %>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    <% end %>
+    <% else %>
+    <p>いいねした投稿はまだありません。</p>
+    <% end %>
+</div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+    .mypage-wrapper {
+    display: flex;
+    padding: 40px 60px;
+    gap: 40px;
+    max-width: 100%;
+    box-sizing: border-box;
+    }
+
+    .mypage-sidebar {
+    width: 240px;
+    background: none;
+    padding: 0;
+    font-size: 16px;
+    }
+
+    .mypage-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #ddd;
+    }
+
+    .mypage-sidebar li {
+    padding: 14px 12px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    }
+
+    .mypage-sidebar li:hover {
+    background-color: #f6f6f6;
+    }
+
+    .mypage-sidebar li::after {
+    content: '＞';
+    color: #888;
+    }
+
+    .mypage-main {
+    flex: 1;
+    padding: 0 20px;
+    }
+
+    .section {
+    display: none;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    }
+
+    .section.active {
+    display: block;
+    }
+
+    /* 編集フォームスタイル */
+    .edit-form-container {
+    background-color: #fff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 16px;
+    }
+
+    .edit-form-container h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    }
+
+    .edit-form-container .field {
+    margin-bottom: 20px;
+    }
+
+    .edit-form-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    }
+
+    .edit-form-container input,
+    .edit-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    }
+
+    .edit-form-container .actions input[type="submit"] {
+    background-color: #0FAFAA;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    }
+
+    .edit-form-container .actions input[type="submit"]:hover {
+    background-color: #0c9898;
+    }
+
+    .edit-form-container .delete-account {
+    margin-top: 32px;
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+    font-size: 14px;
+    }
+
+    .edit-form-container .delete-account h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    }
+
+    .edit-form-container .delete-account form input[type="submit"] {
+    background-color: #ccc;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    }
+
+    .edit-form-container .delete-account form input[type="submit"]:hover {
+    background-color: #999;
+    }
+
+    /* 横並びでカードを表示するラッパー */
+    .like-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: flex-start;
+    margin-top: 20px;
+    }
+
+    /* カード形式（いいね/出品共通） */
+    /* --- 出品・いいね共通カード（hover対応） --- */
+.like-card {
+    width: 240px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 16px;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    text-align: center;
+    transition: all 0.3s ease; /* ← スムーズに */
+    cursor: pointer;
+}
+
+.like-card:hover {
+    transform: translateY(-4px); /* 浮き上がる */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* --- 画像共通化 --- */
+.like-image,
+.tweet-image {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: transform 0.3s ease;
+}
+
+.like-image:hover,
+.tweet-image:hover {
+    transform: scale(1.03);
+}
+
+/* --- like-list-container 再利用（横並び） --- */
+.like-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: flex-start;
+    margin-top: 20px;
+}

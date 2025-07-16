@@ -1,0 +1,97 @@
+/* === 出品フォーム（new-tweet） === */
+
+.new-tweet-container {
+    width: 100%;          
+    max-width: 800px;     
+    margin: 40px auto;
+    padding: 32px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.new-tweet-container h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* タグ部分 */
+.tag-title{
+    display: block;
+    font-weight: bold;
+    font-size: 15px;
+    padding-bottom: 20px; 
+}
+
+.form-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+    margin-top: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 16px;
+}
+
+.form-check {
+    margin-bottom: 8px;
+}
+
+.form-check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.form-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+/* 送信ボタン */
+.actions {
+    margin-top: 24px;
+    text-align: center;
+}
+
+.actions input[type="submit"] {
+    width: 100%;
+    background-color: #7ce0d5;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.actions input[type="submit"]:hover {
+    background-color: #64b1b1;
+}

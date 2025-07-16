@@ -1,50 +1,213 @@
-<h1>GeekTwitter</h1>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HurimaApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+    <%= stylesheet_link_tag 'tweet', media: 'all' %> <!-- アプリケーション全体でスタイルを適用 -->
+    <meta name="csrf-token" content="<%= form_authenticity_token %>">
+</head>
 
-<%= button_to 'ログアウト', destroy_user_session_path, method: :delete %>
+<body>
+    <!--ヘッダー-->
+    <header class="header_tweet">
+    <div class="container inner">
+        <!-- ロゴ + 検索バー -->
+        <div class="area_logo_header">
+        <a class="logo" href="#">
+            <img src="/assets/hurima_logo.png" alt="ロゴ" class="header-logo" />
+        </a>
 
-<h3>Tweet一覧</h3>
-
-<h3>投稿を検索</h3>
-    <%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
-        <%= text_field_tag :search %>
-        <%= submit_tag '検索する'  %>
-    <% end %>
-
-<%= link_to "新規投稿へ", new_tweet_path %>
-
-<div class="tweets-container">
-    <% @tweets.each do |t| %>
-    <div class="tweet">
-
-        <% if t.image.attached? %>
-            <%= image_tag t.image, size: '250x200'%>
-        <% end %>
-    <br>
-        <%= t.user.email %>
-        <%= t.body %>
-
-        <% if user_signed_in? %>
-            <% if current_user.already_liked?(t) %>
-                <%= button_to tweet_like_path(id: t.id, tweet_id: t.id), data: { turbo_method: :delete } do %>
-                <i class="fas fa-heart"></i><%= t.likes.count %>
+        <!-- 検索バー -->
+        <div class="search-bar">
+            <%= form_tag({controller: "tweets", action: "index"}, method: :get) do %>
+            <%= text_field_tag :search, nil, placeholder: "検索", class: "search-input" %>
+            <%= submit_tag '検索', class: "search-submit" %>
             <% end %>
-        <% else %>
-            <%= button_to tweet_likes_path(id: t.id, tweet_id: t.id), data: { turbo_method: :post }  do %>
-            <i class="far fa-heart"></i><%= t.likes.count %>
-            <% end %>
-        <% end %>
-        <% else %>
-            <i class="far fa-heart"></i><%= t.likes.count %>
-        <% end %>
+        </div>
+        </div>
+        
 
-        <%= t.created_at %>
-        <%= link_to "詳細へ", tweet_path(t.id) %>
-        <%= link_to "編集する", edit_tweet_path(t.id) %>
-        <%= link_to "削除する", tweet_path(t.id), data: { turbo_method: :delete } %>
+        <!-- ナビゲーション -->
+        <nav class="area_nav_header">
+        <ul class="list_nav_header">
+            <!-- ホーム -->
+            <li class="home">
+            <%= link_to tweets_path do %>
+                <svg class="icon home-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                <path d="M12 6.453l9 8.375v9.172h-6v-6h-6v6h-6v-9.172l9-8.375zm12 5.695l-12-11.148-12 11.133 1.361 1.465 10.639-9.868 10.639 9.883 1.361-1.465z"/>
+                </svg>
+            <% end %>
+            </li>
+
+            <!-- いいね -->
+            <li class="favorite">
+            <%= link_to user_path(current_user, section: "likes") do %>
+                <svg class="icon nav-heart-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                <path d="m12 5.72c-2.624-4.517-10-3.198-10 2.461 0 3.725 4.345 7.727 9.303 12.54.194.189.446.283.697.283s.503-.094.697-.283c4.977-4.831 9.303-8.814 9.303-12.54 0-5.678-7.396-6.944-10-2.461z" />
+                </svg>
+            <% end %>
+            </li>
+
+            <!-- ユーザー -->
+            <li class="user-dropdown">
+            <input type="checkbox" id="toggle-user-menu" hidden>
+            <label for="toggle-user-menu" class="user-icon-wrapper">
+                <svg class="icon user-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                <path d="M19 7.001c0 3.865-3.134 7-7 7s-7-3.135-7-7c0-3.867 3.134-7.001 7-7.001s7 3.134 7 7.001zm-1.598 7.18c-1.506 1.137-3.374 1.82-5.402 1.82-2.03 0-3.899-.685-5.407-1.822-4.072 1.793-6.593 7.376-6.593 9.821h24c0-2.423-2.6-8.006-6.598-9.819z"/>
+                </svg>
+            </label>
+            <ul class="dropdown-menu">
+                <li><%= link_to 'マイページ', user_path(current_user.id) %></li>
+                <li><%= link_to 'いいね一覧', likes_path %></li>
+                <li><%= link_to '投稿一覧', tweets_path %></li>
+                <li><%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "logout-link" %></li>
+            </ul>
+            </li>
+
+            <!-- 出品 -->
+            <li class="btn_tweet">
+            <%= link_to "出品", new_tweet_path, class: "btn_tweet" %>
+            </li>
+        </ul>
+        </nav>
     </div>
-    <% end %>
-    <br>
-    <%= page_entries_info @tweets %>
-    <%= paginate @tweets %>
+    </header>
 
+        <!-- ▼タグ検索トグル＋フォーム -->
+        <button id="toggle-tag-search" class="tag-search-toggle">タグ検索 ▼</button>
+
+        <div id="tag-search-box" style="display: none;" class="tag-search-box">
+        <%= form_tag({controller: "tweets", action: "index"}, method: :get) do %>
+            <% Tag.all.each do |tag| %>
+            <label class="tag-label">
+                <%= check_box_tag "tag_ids[]", tag.id %>
+                <%= tag.name %>
+            </label>
+            <% end %>
+            <%= submit_tag '検索', class: "tag-submit-button" %>
+        <% end %>
+        </div>
+
+<!-- 商品リスト -->
+<div class="tweets-container inner">
+    <% @tweets.each do |tweet| %>
+        <div class="tweet-list">
+            <div class="card-body">
+                <!-- ユーザー名（左上に配置） -->
+                <div class="user-name">
+                    <strong><%= tweet.user.name %></strong>
+                </div>
+
+                <!-- 商品画像 -->
+                <% if tweet.image.attached? %>
+                    <%= link_to tweet_path(tweet.id) do %>
+                        <%= image_tag tweet.image, size: "250x200", class: "tweet-image" %>
+                    <% end %>
+                <% else %>
+                    <!-- 画像がない場合 -->
+                    <%= image_tag 'noimage.png', size: "250x200", class: "tweet-image" %>
+                <% end %>
+
+                <div class="tweet-info-wrap">   
+                    <div class="tweet-info">
+                        <!-- 商品名 -->
+                        <div class="tweet-name">
+                            <%= tweet.product_name.presence || "（未入力）" %>
+                        </div>
+                    </div>
+
+                    <!-- いいねボタン -->
+                    <button class="like-button <%= 'liked' if current_user.already_liked?(tweet) %>"
+                        data-tweet-id="<%= tweet.id %>"
+                        data-like-id="<%= tweet.likes.find_by(user_id: current_user.id)&.id %>">
+                    <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="m12 5.72c-2.624-4.517-10-3.198-10 2.461
+                                0 3.725 4.345 7.727 9.303 12.54.194.189.446.283.697.283s.503-.094.697-.283
+                                c4.977-4.831 9.303-8.814 9.303-12.54
+                                0-5.678-7.396-6.944-10-2.461z"/>
+                        </svg>
+                    <span class="like-count"><%= tweet.likes.count %></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    <% end %>
 </div>
+
+    <!-- ページネーション -->
+    <div class="pagination">
+        <%= paginate @tweets %>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 HurimaApp</p>
+        </div>
+    </footer>
+</body>
+</html>
+
+<script>
+document.addEventListener("turbo:load", function() {
+document.querySelectorAll(".like-button").forEach(button => {
+    button.addEventListener("click", function(e) {
+    e.preventDefault();
+
+    const tweetId = this.dataset.tweetId;
+    const likeId = this.dataset.likeId;
+    const isLiked = this.classList.contains("liked");
+    const method = isLiked ? "DELETE" : "POST";
+    const url = isLiked
+        ? `/tweets/${tweetId}/likes/${likeId}`
+        : `/tweets/${tweetId}/likes`;
+
+    const likeCountSpan = this.querySelector(".like-count");
+
+    fetch(url, {
+        method: method,
+        headers: {
+        "X-CSRF-Token": document.querySelector("meta[name=csrf-token]").content,
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+    }).then(res => {
+        if (res.ok) {
+        this.classList.toggle("liked");
+
+        // いいね数の増減
+        const count = parseInt(likeCountSpan.textContent);
+        likeCountSpan.textContent = isLiked ? count - 1 : count + 1;
+
+        // ハートアニメーション
+        const heart = this.querySelector(".heart-icon");
+        heart.classList.remove("animate-pop");
+        void heart.offsetWidth; // リセットして再描画
+        heart.classList.add("animate-pop");
+
+        // unlike時に data-like-id を空にする
+        if (isLiked) {
+            this.dataset.likeId = "";
+        } else {
+            res.json().then(data => {
+            this.dataset.likeId = data.like_id; // create時に返すようにする（コントローラ修正要）
+            });
+        }
+        }
+    });
+    });
+});
+});
+
+document.addEventListener("turbo:load", function () {
+    const toggleBtn = document.getElementById("toggle-tag-search");
+    const tagBox = document.getElementById("tag-search-box");
+    if (toggleBtn && tagBox) {
+        toggleBtn.addEventListener("click", () => {
+            tagBox.style.display = (tagBox.style.display === "none" || tagBox.style.display === "") ? "block" : "none";
+        });
+    }
+});
+
+</script>

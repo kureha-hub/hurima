@@ -1,0 +1,389 @@
+/* === 全体設定 === */
+body {
+    background-color: white;
+    font-family: 'M PLUS Rounded 1c', sans-serif; 
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.inner{
+    max-width: 1600px;
+    width: 94%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.flex{
+    display: flex;
+}
+
+/* === ヘッダー === */
+.header_tweet {
+    background-color: white;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.header_tweet > .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 120px;
+    gap: 40px;
+}
+
+/* === ロゴ === */
+.area_logo_header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-grow: 1;
+}
+
+.logo img {
+    height: 48px;
+    width: auto;
+}
+
+/* === 検索バー === */
+.search-bar input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.search-bar input[type="submit"] {
+    background-color: #7ce0d5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar input[type="submit"]:hover {
+    background-color: #0ca5a5;
+}
+
+/* === ナビゲーション === */
+.area_nav_header {
+    margin-left: auto;
+}
+
+.list_nav_header {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    margin: 0;
+    gap: 32px;
+    border-left: 1px solid #ccc;
+}
+
+.list_nav_header li {
+    display: flex;
+    align-items: center;
+}
+
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-icon-wrapper {
+    cursor: pointer;
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    min-width: 160px;
+    padding: 8px 0;
+    list-style: none;
+    z-index: 1000;
+}
+
+.dropdown-menu li {
+    padding: 8px 16px;
+    white-space: nowrap;
+}
+
+.dropdown-menu a {
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    color: #00796b;
+    text-decoration: underline;
+}
+
+.dropdown-menu li:hover {
+    background-color: #e0f7f7;
+}
+
+#toggle-user-menu:checked + label + .dropdown-menu {
+    display: block;
+}
+
+.icon {
+    fill: #ababab;
+    transition: fill 0.3s ease;
+    cursor: pointer;
+}
+
+.user-icon:hover,
+.home-icon:hover {
+    fill: #7ce0d5; 
+}
+
+.nav-heart-icon:hover {
+    fill: #f44f77;  
+}
+
+.btn_tweet a,
+.btn_tweet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #7ce0d5;
+    color: white;
+    width: 100px;
+    height: 48px;
+    border-radius: 10px;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    padding: 0;
+    animation: popIn 0.3s ease-in-out;
+}
+
+.btn_tweet:hover {
+    background-color: #64b1b1;
+}
+
+@keyframes bounce {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+/* --------
+タグ
+------------ */
+.tag-toggle-container {
+text-align: center;
+margin: 20px 0;
+}
+
+.tag-search-toggle {
+background-color: #0FAFAA;
+color: #fff;
+padding: 8px 16px;
+border: none;
+border-radius: 6px;
+font-size: 14px;
+cursor: pointer;
+transition: background-color 0.2s;
+}
+
+.tag-search-toggle:hover {
+background-color: #0c9898;
+}
+
+.tag-search-box {
+background-color: #f9f9f9;
+padding: 16px;
+margin: 0 auto;
+width: fit-content;
+border-radius: 8px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.tag-label {
+font-size: 14px;
+display: inline-block;
+margin: 4px 8px;
+}
+
+.tag-submit-button {
+background-color: #FA6482;
+color: #fff;
+border: none;
+padding: 6px 12px;
+border-radius: 4px;
+margin-top: 10px;
+cursor: pointer;
+}
+
+.tag-submit-button:hover {
+background-color: #e85875;
+}
+
+
+/* -------- tweetの詳細 -------- */
+.tweet-detail-container {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 50px 40px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    min-height: 800px;
+    overflow: hidden;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.tweet-detail-box {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.tweet-image {
+    flex: 0 0 300px;
+    min-width: 300px;
+    margin-bottom: 20px;
+}
+
+.product-image {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    display: block;
+    margin: 0 auto;
+}
+
+.tweet-info {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    font-size: 16px;
+    word-break: break-word;
+}
+
+.tweet-info p {
+    margin-bottom: 12px;
+}
+
+.action-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 16px;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+}
+
+.heart-icon {
+    fill: none;
+    stroke: #e91e63;
+    stroke-width: 2px;
+    transition: fill 0.2s ease;
+}
+
+.like-button.liked .heart-icon {
+    fill: #FA6482;
+    stroke: #FA6482;
+}
+
+.like-count {
+    font-size: 14px;
+    color: #333;
+}
+
+.comment-icon {
+    font-size: 14px;
+    color: #333;
+}
+
+.comment-wrapper {
+    margin-top: 80px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    clear: both;
+    width: 100%;
+}
+
+.comment {
+    margin: 0 20px;
+    padding: 20px 0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    height: 80px;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.comment-submit {
+    margin-top: 10px;
+    background-color: #0FAFAA;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.chat-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 18px;
+    background-color: #0FAFAA;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.chat-button:hover {
+    background-color: #0c9898;
+}
+
+/* === フッター === */
+footer {
+    background: #81d9d7;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}

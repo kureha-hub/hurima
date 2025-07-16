@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
     <title><%= content_for(:title) || "Hurima App" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,19 +7,22 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <script src="https://kit.fontawesome.com/0c10c7ef6e.js"  crossorigin="anonymous"></script> 
-    
+    <script src="https://kit.fontawesome.com/0c10c7ef6e.js" crossorigin="anonymous"></script>
+
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+    
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= yield(:js) %>
   </head>
 
-  <body>
+  <!-- ✅ bodyにlayoutクラスを追加 -->
+  <body class="layout">
     <%= yield %>
   </body>
 </html>
