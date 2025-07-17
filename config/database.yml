@@ -32,4 +32,3 @@ production:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  # database: path/to/persistent/storage/production.sqlite3

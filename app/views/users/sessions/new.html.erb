@@ -1,27 +1,93 @@
-<h2>ログイン</h2>
-<p>※登録したメールアドレスとパスワードを入力してください。</p>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HurimaApp</title>
+  <%= stylesheet_link_tag 'login', media: 'all' %>
+  <link href='https://cdn.boxicons.com/fonts/transformations.min.css' rel='stylesheet'>
+</head>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <h2>メール </h2><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<body>
+  <div class="container">
+    <!-- ログインフォーム -->
+    <div class="form-box login">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <h1>Login</h1>
 
-  <div class="field">
-    <h2>パスワード </h2><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+        <div class="input-box">
+          <%= f.email_field :email, placeholder: "Email", required: true %>
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAYZJREFUSEvtlbFLw0AUxr8HgXawgwWhCG6CoP+EY3Eu4iBCQaHiIAgtd8XhBukdLQgOomBBEAcRZ+noP2HBWZCCUIc6tBB4cjEtJTRNbclSzBKSe+/7ffe9cCHEfFHM+pgjgJQyx8xnRLQ2S2zM/EZEp1rrJ6sziEhK+QpgfRbxod6m1nojCGC/4ArA4ZSgQa/W2jM/vAMPYBeEEFkiugWQmRDUYua8MaYhpRzojAQkEomUUupbCLFIRNcAtiMgj8xcMMZ8KaUWer1ep280LKJ3Zt4zxrzYgnK5vMPMlwDSAVCbiI4qlcqDfS+E2CSiOwArUQBPh4jqruueVKvVTrFYzDiOYyPL+pCG67r5Wq3WKpVKKcdxzpl5f9hA6AwCLj8AHGitn32XBXs3xtjoIKXcAnADYDkY46QAr4+Z75PJ5LFSqm2flVLpbrd7QUS7YfP5E8AX+QTQj6EOYGnc8KcBTPjF/pb9AyLjGhVR7Iddzs4GwGqkvTEFocf1LKLjeufolxlXRD+NIa4Z+DxL1AAAAABJRU5ErkJggg=="/>
+        </div>
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <h2>私を覚える</h2>
+        <div class="input-box">
+          <%= f.password_field :password, placeholder: "Password", required: true %>
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAUBJREFUSEvtlb9KxEAQxr8J5AnEQgRBLLT1FWy0sxHfQbCSg2T2GkXJ7CHBSt/Byk5Q8BUsbOxEQazEB0iQkRwexPuzYwKHFrfVsjP5fpuZb3cJUx40ZX38CsDMOwD2AGx8b+hOVc+991fWBk0AM58C6IwTUtVD7/1RCBIEOOd2VfWyEiCi47IsL6p5HMf7qtqt5qq66b2/nQQJApj5HsA6ER1kWXZWF0nTtEtEJwBuRGSrLeATQFQUxXye5+91Eefcgqq+AfgQkbm2AK0+FJGxf8rMwXi/tKEGWQJW/G8ASZJsR1HkAaxZHq/HiehRVTsicv1jfViEmV8BLDYRr+U+iciKBeg3ru0YNsRIkweNmwEGFZiVaMQL/8JFLwCWWtr0WUSWgwetuiqIqEdEqw0hDwDYvCoaiprp5ptsKhgJX3hVjxk24sdaAAAAAElFTkSuQmCC"/>
+        </div>
+
+        <div class="forgot-link">
+          <%= link_to "Forgot password?", new_password_path(resource_name) %>
+        </div>
+
+        <%= f.submit "Login", class: "btn" %>
+      <% end %>
     </div>
-  <% end -%>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <!-- 新規登録フォーム -->
+    <div class="form-box signin">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <h1>Signin</h1>
+
+        <div class="input-box">
+          <%= f.text_field :name, placeholder: "Username", required: true %>
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAb1JREFUSEvFlM9LG1EQx7+T4DlK68FjEE9eBHstPXqpELCgFy/evHiwtslsggTK7nsJTYMI/gniRfxRevEfaKFID9KT0mNLoe2hLTQb2B2zwYRkze6TTYN7fPPm85kZ3ixhxB+NmI87CZj5iYg4RDQbFEREFyLyUin13lSgUWBZ1oqI7AfcEMxPpVI527bfxkliBeVyedx13S8AJiIg3xqNxnS9Xv8XJYkVMHMOwFFchSKyoLU+SySwLOu5iLyOHQHRpuM49USCYrG46Pv+qUHw1HGcd4kE+Xw+k06nr0TkYQTgu+d5M9Vq9U8iQZBUKBSWiehgAMAHsKSUOk78ijqJzPwYQAVAsAceEX0mohe2bX8Yeg9MAFPcuGgmgCkeKWDmSQBbAOYBzAF4EIL9BPCJiD66rvumVqv9GCQbKGDm1RZwF0DGVOFN/Jfv+2uVSuUkfP+WgJk3Wr+GnTuC+66JyDOt9WHvYZ+gVCplPc+7BJBOImiN9G+z2cz2jqtPwMx7ANYTwttpIrKttX7VYYQFXwFMDSMAcK6UehQlaAIYG1LwWynVfRzhDmRIeDtdKdXl3t+i/Y9OAsbIO7gGbUyQGaPS/6wAAAAASUVORK5CYII="/>
+        </div>
+
+        <div class="input-box">
+          <%= f.email_field :email, placeholder: "Email", required: true %>
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAYZJREFUSEvtlbFLw0AUxr8HgXawgwWhCG6CoP+EY3Eu4iBCQaHiIAgtd8XhBukdLQgOomBBEAcRZ+noP2HBWZCCUIc6tBB4cjEtJTRNbclSzBKSe+/7ffe9cCHEfFHM+pgjgJQyx8xnRLQ2S2zM/EZEp1rrJ6sziEhK+QpgfRbxod6m1nojCGC/4ArA4ZSgQa/W2jM/vAMPYBeEEFkiugWQmRDUYua8MaYhpRzojAQkEomUUupbCLFIRNcAtiMgj8xcMMZ8KaUWer1ep280LKJ3Zt4zxrzYgnK5vMPMlwDSAVCbiI4qlcqDfS+E2CSiOwArUQBPh4jqruueVKvVTrFYzDiOYyPL+pCG67r5Wq3WKpVKKcdxzpl5f9hA6AwCLj8AHGitn32XBXs3xtjoIKXcAnADYDkY46QAr4+Z75PJ5LFSqm2flVLpbrd7QUS7YfP5E8AX+QTQj6EOYGnc8KcBTPjF/pb9AyLjGhVR7Iddzs4GwGqkvTEFocf1LKLjeufolxlXRD+NIa4Z+DxL1AAAAABJRU5ErkJggg=="/>
+        </div>
+
+        <div class="input-box">
+          <%= f.password_field :password, placeholder: "Password", required: true %>
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAUBJREFUSEvtlb9KxEAQxr8J5AnEQgRBLLT1FWy0sxHfQbCSg2T2GkXJ7CHBSt/Byk5Q8BUsbOxEQazEB0iQkRwexPuzYwKHFrfVsjP5fpuZb3cJUx40ZX38CsDMOwD2AGx8b+hOVc+991fWBk0AM58C6IwTUtVD7/1RCBIEOOd2VfWyEiCi47IsL6p5HMf7qtqt5qq66b2/nQQJApj5HsA6ER1kWXZWF0nTtEtEJwBuRGSrLeATQFQUxXye5+91Eefcgqq+AfgQkbm2AK0+FJGxf8rMwXi/tKEGWQJW/G8ASZJsR1HkAaxZHq/HiehRVTsicv1jfViEmV8BLDYRr+U+iciKBeg3ru0YNsRIkweNmwEGFZiVaMQL/8JFLwCWWtr0WUSWgwetuiqIqEdEqw0hDwDYvCoaiprp5ptsKhgJX3hVjxk24sdaAAAAAElFTkSuQmCC"/>
+        </div>
+
+        <%= f.submit "Signin", class: "btn" %>
+      <% end %>
+    </div>
+
+    <!-- 切り替えパネル -->
+    <div class="toggle-box">
+      <div class="toggle-pannel toggle-left">
+        <h1>Hello,Welcome!</h1>
+        <p>Don't have an account?</p>
+        <button class="btn signin-btn">Signin</button>
+      </div>
+
+      <div class="toggle-pannel toggle-right">
+        <h1>Welcome Back!</h1>
+        <p>Already have an account?</p>
+        <button class="btn login-btn">Login</button>
+      </div>
+    </div>
   </div>
-<% end %>
+</body>
+</html>
 
-<%= render "users/shared/links" %>
+<script>
+  const container = document.querySelector('.container');
+  const registerBtn = document.querySelector('.signin-btn');
+  const loginBtn = document.querySelector('.login-btn');
+
+  registerBtn.addEventListener('click', () => {
+    container.classList.add('active');
+  });
+
+  loginBtn.addEventListener('click', () => {
+    container.classList.remove('active');
+  });
+
+</script>
+
+
