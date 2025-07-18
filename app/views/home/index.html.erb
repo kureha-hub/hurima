@@ -2,98 +2,37 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HurimaApp</title>
-
 <%= csrf_meta_tags %>
 <%= csp_meta_tag %>
 
 <script src="https://kit.fontawesome.com/0c10c7ef6e.js" crossorigin="anonymous"></script>
-
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
 <%= stylesheet_link_tag "home1", "data-turbo-track": "reload" %>
 <%= stylesheet_link_tag "reset", "data-turbo-track": "reload" %>
-
-<%= javascript_importmap_tags %>
-<%= javascript_import_module_tag "home" %>
 </head>
 
 <body>
-    <header class="header">
-        <div class="inner flex is-center">
-            <a class="logo" href="#"><img src="<%= asset_path('hurima_logo.png') %>" alt="logo"></a>
-            <nav class="gnav">
-                <ul class="buttons">
-                    <li class="button1"><a href=""><%= link_to 'ログイン', tweets_path%></a></li>
-                    <li class="button2"><a href=""><%= link_to 'サインイン', new_user_registration_path %></a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <section class="section-mv">
-        <div class="container inner">
-            <h1 class="fade-text">さあ、あなたも参加しよう！</h1>
-            <p>簡単な手順で商品を出品、購入することができます。</p>
+    <section class="header">
+        <nav>
+        <a class="logo" href="#">
+            <img src="<%= asset_path('hurima_logo.png') %>" alt="HurimaApp Logo">
+        </a>
+        <div class="nav-links">
             <ul class="buttons">
-                <li class="button1"><a href=""><%= link_to 'ログイン', tweets_path%></a></li>
-                <li class="button2"><a href=""><%= link_to '出品する', new_user_registration_path %></a></li>
+                <li><%= link_to 'ログイン', tweets_path, class: 'button1' %></li>
+                <li><%= link_to 'サインイン', new_user_registration_path, class: 'button2' %></li>
             </ul>
         </div>
-    </section>
+        </nav>
 
-    <div class="container inner">
-        <section class="section-wrap ">
-            <h2 class="section-title">アプリの特徴</h2>
-
-            <div class="feature-body flex">
-                <div class="feature-list">
-                    <div class="feature-number">01</div>
-                    <h3>送料無料</h3>
-                    <p><img src="<%= asset_path ('free.png') %>" alt="送料無料" class="feature-img"></p>
-                    <h4>すべての取引に送料が無料</h4>
-                    <ul>
-                        <li>同じ大学だから大学内で直接受け取れる</li>
-                        <li>送料が無料なので、利益がそのまま手元に残る</li>
-                    </ul>
-                </div>
-
-                <div class="feature-list">
-                    <div class="feature-number">02</div>
-                    <h3>簡単な検索機能</h3>
-                    <p><img src="<%= asset_path('University.png') %>" alt="送料無料" class="feature-img"></p>
-                    <h4>直感的に教科書を簡単に検索</h4>
-                    <ul>
-                        <li>学部名で絞込み検索</li>
-                        <li>講義名で簡単検索</li>
-                    </ul>
-                </div>
-
-                <div class="feature-list">
-                    <div class="feature-number">03</div>
-                    <h3>多くの人とつながる</h3>
-                    <p><img src="<%= asset_path ('tunagaru.png') %>" alt="送料無料" class="feature-img"></p>
-                    <h4>すべての取引に送料が無料</h4>
-                    <ul>
-                        <li>サークルに入らなくても先輩と繋がれる</li>
-                        <li>学内のネットワークを広げられる</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <section class="products">
-    <h3>商品</h3>
-    <div class="product-list">
-        <div class="product-item">
-        <p>商品名</p>
-        <p>価格</p>
+        <div class="text-box">
+            <h1>教科書を通じて、つながろう</h1>
+            <h2>出品とチャットで、同じ大学の仲間と教科書をシェアしよう</p>
+            <%= link_to 'さっそく出品する', new_user_registration_path, class: 'hero-btn' %>
         </div>
-    </div>
     </section>
-
-    <footer class="footer">
-        <p><small>© 2025 HurimaApp</small></p>
-    </footer>
+</body>
 </body>
 </html>
